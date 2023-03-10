@@ -14,6 +14,9 @@ import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import static javax.swing.text.html.FormSubmitEvent.MethodType.POST;
+import static org.aspectj.weaver.tools.PointcutPrimitive.GET;
+
 
 @Configuration
 @EnableWebSecurity
@@ -30,18 +33,15 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http
-                .csrf()
-                .disable();
-        http
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-        http
-                .authorizeRequests()
-                .anyRequest()
-                .permitAll();
-        http
-                .addFilter(new CustomAuthenticationFilter(authenticationManagerBean()));
+        CustomAuthenticationFilter customAuthenticationFilter = new CustomAuthenticationFilter((authenticationManagerBean()));
+        customAuthenticationFilter.setFilterProcessesUrl(("/api/login"));
+        http.csrf().disable();
+        http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+        http.authorizeRequests().antMatchers("/api/login/**").permitAll();
+        http.authorizeRequests().antMatchers(String.valueOf(GET), "/api/user/**").hasAnyAuthority("ROLE_USER");
+        http.authorizeRequests().antMatchers(String.valueOf(POST), "/api/user/save/**").hasAnyAuthority("ROLE_ADMIN");
+        http.authorizeRequests().anyRequest().authenticated();
+        http.addFilter(customAuthenticationFilter);
     }
 
     @Bean
