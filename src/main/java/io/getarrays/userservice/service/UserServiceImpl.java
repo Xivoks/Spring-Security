@@ -4,7 +4,6 @@ import io.getarrays.userservice.domain.Role;
 import io.getarrays.userservice.domain.User;
 import io.getarrays.userservice.repo.RoleRepo;
 import io.getarrays.userservice.repo.UserRepo;
-import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -13,6 +12,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;

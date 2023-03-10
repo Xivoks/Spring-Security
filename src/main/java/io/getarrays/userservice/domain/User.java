@@ -1,10 +1,10 @@
 package io.getarrays.userservice.domain;
 
-import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import javax.persistence.*;
 import java.util.ArrayList;
 import java.util.Collection;
 
@@ -21,4 +21,5 @@ public class User {
     private String password;
     @ManyToMany(fetch = FetchType.EAGER)
     private Collection<Role> roles = new ArrayList<>();
+
 }
